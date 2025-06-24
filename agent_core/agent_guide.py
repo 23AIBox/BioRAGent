@@ -99,7 +99,7 @@ class ExistenceCheckTool(BaseTool):
         url_gene2 = f"{base_url_gene2}{name}/taxon/9606"
         headers = {
             "accept": "application/json",
-            "api-key": "b27855b4a18aa2aa178fc22083d0c07ee308"
+            "api-key": "xxx"
         }        
         try:
             url_gene1 = f"{base_url_gene1}{name}"
