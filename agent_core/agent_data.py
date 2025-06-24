@@ -309,7 +309,7 @@ class GeneInfoTool(BaseTool):
         base_url_gene = "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/gene/symbol/"
         headers = {
             "accept": "application/json",
-            "api-key": "b27855b4a18aa2aa178fc22083d0c07ee308"
+            "api-key": "xxx"
         }
         if isinstance(search_term, list):
             search_term = ','.join(search_term)
@@ -361,7 +361,7 @@ class DiseaseInfoTool(BaseTool):
     def _run(self, disease_name: str) -> Union[str, None]:
         def fetch_bioontology_info(disease_name):
             url = f'https://data.bioontology.org/search?q={disease_name}'
-            headers = {'Authorization': 'apikey token=bd2f8372-cac9-4ed6-8f56-7e24b5c87e85'}
+            headers = {'Authorization': 'apikey token=xxx'}
             response = fetch_data(url, headers=headers)
             if response:
                 collection = response.get('collection', [])
