@@ -58,25 +58,21 @@ SNP **1217074595** is associated with the **LINC01270** gene.
 **Ensure that all responses follow this structured Markdown format.**  
 """
 
-# 初始化 conversational memory
 conversational_memory = ConversationBufferWindowMemory(
     memory_key='chat_history',
     k=1,
     return_messages=True
 )
 
-# 初始化工具列表
-tools_val = []
-# 初始化 ChatOpenAI    
+
+tools_val = []   
 llm_val = ChatOpenAI(
     openai_api_key=OPENAI_API_KEY,
     temperature=1,
-    #base_url="http://chatapi.littlewheat.com/v1", 
-    base_url="https://api.xty.app/v1", 
-    #model_name="gpt-3.5-turbo-16k-0613"
+    base_url="xxx", 
     model_name='gpt-4o'
 )
-# 初始化 agent with tools
+
 agent_val = initialize_agent(
     agent='chat-conversational-react-description',
     tools=tools_val,
@@ -85,7 +81,7 @@ agent_val = initialize_agent(
     max_iterations=3,
     early_stopping_method='generate',
     memory=conversational_memory,
-    #generation_length=1500  # 增加每次生成的回复长度
+    #generation_length=1500 
     max_tokens=None, 
     #handle_parsing_errors="If successfully execute the plan then return summarize and end the plan. Otherwise, please call the API step by step."
     handle_parsing_errors=True
