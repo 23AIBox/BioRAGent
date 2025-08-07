@@ -1,10 +1,14 @@
-from config import OPENAI_API_KEY
 from langchain.agents import initialize_agent
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.tools import BaseTool
 import requests
 from urllib.parse import quote
 from langchain_community.chat_models import ChatOpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 val_prompt =  """
 You are an AI-powered chatbot that evaluates biomedical knowledge responses. Your task is to determine whether a given response sufficiently addresses the user’s query in a medically accurate, ethical, and legally compliant manner.  
 
@@ -67,10 +71,10 @@ conversational_memory = ConversationBufferWindowMemory(
 
 tools_val = []   
 llm_val = ChatOpenAI(
-    openai_api_key=OPENAI_API_KEY,
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
     temperature=1,
-    base_url="xxx", 
-    model_name='gpt-4o'
+    base_url=os.getenv("BASE_URL"),
+    model_name=os.getenv("MODEL_NAME")
 )
 
 agent_val = initialize_agent(
