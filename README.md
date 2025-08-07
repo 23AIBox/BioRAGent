@@ -1,6 +1,6 @@
 # BioRAGent
 
-**BioRAGent** is a multi-agent biomedical assistant that integrates retrieval-augmented generation (RAG) techniques with specialized agents to enable natural language interaction for querying foundational knowledge of genes, diseases, and phenotypes, as well as their interconnections. It also supports queries about the basic properties of SNPs and proteins. This repository contains the core implementation and evaluation dataset.
+**BioRAGent** is a multi-agent biomedical assistant that integrates retrieval-augmented generation (RAG) techniques with specialized agents to enable natural language interaction for querying foundational knowledge of genes, diseases, and phenotypes, as well as their interconnections. It also supports queries about the basic properties of SNPs and proteins. 
 
 ---
 
