@@ -7,10 +7,13 @@ import requests
 import csv
 import pandas as pd
 from typing import Optional, List, Union, Dict, Any
-from config import OPENAI_API_KEY
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class ExistenceCheckTool(BaseTool):
     name = "ExistenceCheckTool"
@@ -24,9 +27,9 @@ class ExistenceCheckTool(BaseTool):
         super().__init__(**data) 
 
         if self.disease_dict is None: 
-            self.disease_dict = self.load_disease_data('disease_ontology.csv')
-            self.pheno_dict = self.load_pheno_data('Phenotypes.csv')
-            self.orphat_dict = self.load_orphat_data('orphat.csv')
+            self.disease_dict = self.load_disease_data('agent_core/disease_ontology.csv')
+            self.pheno_dict = self.load_pheno_data('agent_core/Phenotypes.csv')
+            self.orphat_dict = self.load_orphat_data('agent_core/orphat.csv')
 
     def load_disease_data(self, file_path):
         disease_dict = {}
@@ -99,7 +102,7 @@ class ExistenceCheckTool(BaseTool):
         url_gene2 = f"{base_url_gene2}{name}/taxon/9606"
         headers = {
             "accept": "application/json",
-            "api-key": "xxx"
+            "api-key": os.getenv("NCBI_API_KEY")
         }        
         try:
             url_gene1 = f"{base_url_gene1}{name}"
@@ -272,10 +275,10 @@ conversational_memory_guide = ConversationBufferWindowMemory(
 )
  
 llm_guide = ChatOpenAI(
-    openai_api_key=OPENAI_API_KEY,
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
     temperature=0.7,
-    base_url="xxx", 
-    model_name='gpt-4o'
+    base_url=os.getenv("BASE_URL"),
+    model_name=os.getenv("MODEL_NAME")
 )
 
 agent_guide = initialize_agent(
