@@ -20,7 +20,6 @@ This folder contains the core source code of BioRAGent, including the implementa
 | `agent_main.py`        | Core script coordinating the interaction among the three agents. |
 | `initialize_agents.py` | Initializes agent instances with appropriate configurations. |
 | `streamlit_app.py`     | Streamlit-based web interface for interactive user testing.  |
-| `config.py`            | Configuration file containing API keys.                      |
 | `*.csv`                | Biomedical resource files (e.g., disease ontology, phenotypes). |
 | `assistant.png`        | Assistant icon used in the Streamlit UI.                     |
 | `user.png`             | User avatar used in the Streamlit UI.                        |
