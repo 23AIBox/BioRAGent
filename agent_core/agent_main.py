@@ -1,4 +1,11 @@
-from initialize_agents import agent_data, agent_guide, agent_val
+import os
+import sys
+from dotenv import load_dotenv
+load_dotenv()
+os.environ["HTTP_PROXY"] = os.getenv("HTTP_PROXY")
+os.environ["HTTPS_PROXY"] = os.getenv("HTTPS_PROXY")
+
+from initialize_agents import agent_data, agent_val
 from agent_guide import process_input
 import re
 
@@ -71,6 +78,13 @@ class ValidationAgent:
         return final_answer
 
 guide_agent = GuideAgent()
-
-def main(user_question: str):
+def run_agent(user_question: str):
     return guide_agent.handle_query(user_question)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Please provide a question as a command-line argument.")
+        sys.exit(1)
+    user_question = sys.argv[1]
+    answer = run_agent(user_question)
+    print(answer)
