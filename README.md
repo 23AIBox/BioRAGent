@@ -75,7 +75,7 @@ Below are detailed descriptions of each task:
 
 ### `evaluation_llm/`
 
-This folder contains the code used to evaluate BioRAGent's performance against other LLMs. Each file corresponds to a specific LLM, allowing for comparative analysis. For models not represented in this folder, evaluations were performed via their respective official online platforms. Additionally, the folder includes code for assessing consistency between human judgments and LLM-generated responses.
+This folder contains the code used to evaluate BioRAGent's performance against other LLMs. Each file corresponds to a specific LLM, allowing for comparative analysis. For models not represented in this folder, evaluations were performed via their respective official online platforms. Additionally, the folder contains code for evaluating inter-annotator agreement.
 
 ---
 
