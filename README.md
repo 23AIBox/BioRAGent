@@ -71,6 +71,10 @@ Below are detailed descriptions of each task:
 
   Questions ask for chromosome locations of genes linked to a given phenotype.
 
+**BioASQ_yesno.csv**
+
+  This file contains a subset of yes/no biomedical questions from BioASQ Task B.
+  
 ---
 
 ### `evaluation_llm/`
