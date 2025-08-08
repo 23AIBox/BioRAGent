@@ -1,13 +1,17 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from statsmodels.stats.inter_rater import fleiss_kappa
+from sklearn.utils import resample
 import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
 def load_real_data(file_path):
     try:
-        data = pd.read_csv(file_path, header=None, names=['Human', 'LLM'])
+        col_names = ['Human1', 'Human2', 'Human3', 'Human4', 'Human5', 'LLM']
+        data = pd.read_csv(file_path, header=None, names=col_names)
         print(f"Loaded data: {len(data)} rows")
         return data
     except Exception as e:
@@ -24,14 +28,19 @@ def discretize_scores(score):
     else:
         return 'Invalid'
 
-score_data = load_real_data('./evaluation_llm/llm_human2.csv')
+score_data = load_real_data('llm_human.csv')
+if score_data is None:
+    print("Error: Failed to load 'llm_human.csv'. Please check the file path and format.")
+    exit(1)
 score_data.insert(0, 'SampleID', range(1, len(score_data)+1))
 print("First 5 rows of score data:")
-print(score_data)
+print(score_data.head())
 
 discrete_data = score_data.copy()
-for col in ['Human', 'LLM']:
+for col in ['Human1', 'Human2', 'Human3', 'Human4', 'Human5']:
     discrete_data[col] = discrete_data[col].apply(discretize_scores)
+print("\nFirst 5 rows of discretized score data:")
+print(discrete_data[['SampleID', 'Human1', 'Human2', 'Human3', 'Human4', 'Human5']].head())
 
 def build_fleiss_matrix(data, raters):
     categories = ['Poor (0.0-0.4)', 'Medium (0.4-0.8)', 'Good (0.8-1.0)']
@@ -49,7 +58,10 @@ def build_fleiss_matrix(data, raters):
             fleiss_matrix[i, cat_to_idx[cat]] = count
     return fleiss_matrix
 
-fleiss_input = build_fleiss_matrix(discrete_data, ['Human', 'LLM'])
+raters = ['Human1', 'Human2', 'Human3', 'Human4', 'Human5']
+fleiss_input = build_fleiss_matrix(discrete_data, raters)
+print(f"\nFleiss input matrix (first 5 samples):")
+print(fleiss_input[:5])
 
 def calc_p0(fleiss_matrix):
     n_samples, n_categories = fleiss_matrix.shape
@@ -68,7 +80,7 @@ print(f"P₀ (Observed agreement rate): {p0:.4f}")
 
 try:
     kappa = fleiss_kappa(fleiss_input)
-    print(f"\nFleiss' κ (Human + LLM): {kappa:.4f}")
+    print(f"\nFleiss' κ (5 Humans): {kappa:.4f}")
 except Exception as e:
     print(f"Error calculating Fleiss' κ: {e}")
     kappa = np.nan
@@ -107,14 +119,14 @@ for cat, prop in agreement.items():
     print(f"{cat}: {prop:.4f}")
 
 print("\n" + "="*80)
-print("Human and LLM Evaluation Consistency Analysis Report (Three-class)".center(80))
+print("Human Inter-Annotator Agreement Report (Three-class)".center(80))
 print("="*80)
 print(f"Number of samples: {len(score_data)}")
-print(f"Raters: 1 human + 1 LLM")
+print(f"Raters: 5 humans")
 print(f"Evaluation standard: 3-class (Poor, Medium, Good)")
 print("-"*80)
 if not np.isnan(kappa):
-    print(f"Fleiss' κ (Human + LLM): {kappa:.4f} [95%CI: {lower_ci:.4f}-{upper_ci:.4f}]")
+    print(f"Fleiss' κ (5 Humans): {kappa:.4f} [95%CI: {lower_ci:.4f}-{upper_ci:.4f}]")
 else:
     print("Fleiss' κ calculation failed")
 print("-"*80)
@@ -131,4 +143,5 @@ for cat, prop in agreement.items():
 print("="*80)
 
 full_results = pd.concat([score_data, discrete_data.add_prefix('Discrete_')], axis=1)
-full_results.to_csv('human_llm_evaluation_results_class.csv', index=False)
+full_results.to_csv('human_interannotator_results.csv', index=False)
+print("\nFull results saved to human_interannotator_results.csv")
